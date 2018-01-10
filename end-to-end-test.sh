@@ -139,7 +139,13 @@ get() {
 sleep 1
 
 get "127.0.0.1:${port}/metrics" | grep -E -v "${skip_re}" > "${tmpdir}/e2e-output.txt"
-
-diff -u \
+if [ `uname -i` == "ppc64le" ]
+then
+  diff -u \
+  "collector/fixtures/e2e-ppc64le-output.txt" \
+  "${tmpdir}/e2e-output.txt"
+else
+  diff -u \
   "collector/fixtures/e2e-output.txt" \
   "${tmpdir}/e2e-output.txt"
+fi
